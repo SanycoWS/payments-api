@@ -18,18 +18,18 @@ class GetPaymentInfoService
             'order_id' => $paymentId,
         ]);
         return new PaymentInfoDTO(
-            $this->getStatus($response['status']),
+            $this->getStatus($response->status),
             Payments::PAYPAL,
-            $response['order_id'],
-            $response['transaction_id'],
-            $response['amount'],
-            $this->getCurrency($response['currency']),
-            $response['create_date'],
+            $response->order_id,
+            $response->transaction_id,
+            $response->amount,
+            $this->getCurrency($response->currency),
+            (int)substr($response->create_date, 0, 10),
             new PayerDTO(
-                $response['sender_card_mask2'],
+                $response->sender_card_mask2,
                 null,
                 null,
-                $response['ip']
+                $response->ip
             ),
         );
     }

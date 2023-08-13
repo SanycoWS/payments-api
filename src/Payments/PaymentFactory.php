@@ -27,8 +27,8 @@ class PaymentFactory
             Payments::STRIPE => new StripeHandler(new StripeClient($configData['stripe']['secret_key'])),
             Payments::LIQPAY => new LiqpayHandler(
                 new AuthDataDTO(
-                    $configData['liqpay']['private_key'],
                     $configData['liqpay']['public_key'],
+                    $configData['liqpay']['private_key'],
                     null,
                 )
             ),
