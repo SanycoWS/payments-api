@@ -2,8 +2,8 @@
 
 namespace Sanycows\PaymentsApi\Payments\Handlers\Paypal;
 
-use App\Enums\Currency;
-use App\Enums\Payments;
+use Sanycows\PaymentsApi\Enums\Currency;
+use Sanycows\PaymentsApi\Enums\Payments;
 use Sanycows\PaymentsApi\Enums\Status;
 use Sanycows\PaymentsApi\Payments\DTO\PayerDTO;
 use Sanycows\PaymentsApi\Payments\DTO\PaymentInfoDTO;
@@ -17,12 +17,17 @@ class GetPaymentInfoService
         return new PaymentInfoDTO(
             $this->getStatus($response['status']),
             Payments::PAYPAL,
-            $response['purchase_units']['0']['payments']['captures']['0']['id'],
             $response['id'],
-            $response['purchase_units']['0']['payments']['captures']['0']['amount']['value'],
-            $this->getCurrency($response['purchase_units']['0']['payments']['captures']['0']['amount']['currency_code']),
-            time(),
-            new PayerDTO('test'),
+            $response['purchase_units']['0']['payments']['captures']['0']['id'] ?? '',
+            $response['purchase_units']['0']['payments']['captures']['0']['amount']['value'] ?? '',
+            $this->getCurrency($response['purchase_units']['0']['payments']['captures']['0']['amount']['currency_code'] ?? ''),
+            strtotime($response['purchase_units']['0']['payments']['captures']['0']['create_time'] ?? time()),
+            new PayerDTO(
+                ($response['name']['given_name'] ?? '') . ' ' . ($response['name']['surname'] ?? ''),
+                $response['email_address'] ?? null,
+                null,
+                null
+            ),
         );
     }
 

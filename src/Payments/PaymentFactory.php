@@ -2,7 +2,7 @@
 
 namespace Sanycows\PaymentsApi\Payments;
 
-use App\Enums\Payments;
+use Sanycows\PaymentsApi\Enums\Payments;
 use Sanycows\PaymentsApi\Payments\DTO\AuthDataDTO;
 use Sanycows\PaymentsApi\Payments\Handlers\Liqpay\LiqpayHandler;
 use Sanycows\PaymentsApi\Payments\Handlers\Paypal\PaypalHandler;
@@ -13,12 +13,25 @@ use Stripe\StripeClient;
 class PaymentFactory
 {
 
-    public function getInstance(Payments $payments, AuthDataDTO $authData): PaymentsInterface
+    public function getInstance(Payments $payments, array $configData): PaymentsInterface
     {
         return match ($payments) {
-            Payments::PAYPAL => new PaypalHandler(new PayPalClient(), $authData),
-            Payments::STRIPE => new StripeHandler(new StripeClient($authData->getPrivate())),
-            Payments::LIQPAY => new LiqpayHandler(),
+            Payments::PAYPAL => new PaypalHandler(
+                new PayPalClient(),
+                new AuthDataDTO(
+                    $configData['paypal.client_id'],
+                    $configData['paypal.client_secret'],
+                    $configData['paypal.app_id'],
+                )
+            ),
+            Payments::STRIPE => new StripeHandler(new StripeClient($configData['stripe.secret_key'])),
+            Payments::LIQPAY => new LiqpayHandler(
+                new AuthDataDTO(
+                    $configData['liqpay.private_key'],
+                    $configData['liqpay.public_key'],
+                    null,
+                )
+            ),
         };
     }
 }

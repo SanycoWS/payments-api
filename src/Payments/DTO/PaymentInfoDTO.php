@@ -2,8 +2,9 @@
 
 namespace Sanycows\PaymentsApi\Payments\DTO;
 
-use App\Enums\Currency;
-use App\Enums\Payments;
+
+use Sanycows\PaymentsApi\Enums\Currency;
+use Sanycows\PaymentsApi\Enums\Payments;
 use Sanycows\PaymentsApi\Enums\Status;
 
 class PaymentInfoDTO
