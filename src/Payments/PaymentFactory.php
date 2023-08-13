@@ -22,6 +22,7 @@ class PaymentFactory
                     $configData['paypal']['client_id'],
                     $configData['paypal']['client_secret'],
                     $configData['paypal']['app_id'],
+                    $configData['paypal']['mode'],
                 )
             ),
             Payments::STRIPE => new StripeHandler(new StripeClient($configData['stripe']['secret_key'])),

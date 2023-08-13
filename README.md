@@ -10,6 +10,7 @@ return [
         'client_id' => env('PAYPAL_CLIENT_ID', ''),
         'client_secret' => env('PAYPAL_CLIENT_SECRET', ''),
         'app_id' => env('PAYPAL_APP_ID', ''),
+        'mode' => env('PAYPAL_MODE', ''),
     ],
     'stripe' => [
         'secret_key' => env('STRIPE_SECRET_KEY', null),
