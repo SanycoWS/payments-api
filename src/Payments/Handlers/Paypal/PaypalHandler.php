@@ -15,19 +15,18 @@ class PaypalHandler implements PaymentsInterface
         AuthDataDTO $authData
     ) {
         $this->payPalClient->setApiCredentials([
-            'mode' => 'live',
+            'mode' => $authData->isSandbox() === false ? 'live' : 'sandbox',
             // Can only be 'sandbox' Or 'live'. If empty or invalid, 'live' will be used.
             'sandbox' => [
-                'client_id' => '',
-                'client_secret' => '',
-                'app_id' => '',
+                'client_id' => $authData->getPublic(),
+                'client_secret' => $authData->getPrivate(),
+                'app_id' => $authData->getId(),
             ],
             'live' => [
                 'client_id' => $authData->getPublic(),
                 'client_secret' => $authData->getPrivate(),
                 'app_id' => $authData->getId(),
             ],
-
             'payment_action' => 'Sale',
             // Can only be 'Sale', 'Authorization' or 'Order'
             'currency' => 'USD',

@@ -8,12 +8,22 @@ class AuthDataDTO
      * @param string $public publishableKey|client_id|public_key
      * @param string $private secret_key|client_secret|private_key
      * @param string|null $id app_id
+     * @param bool $isSandbox
      */
     public function __construct(
         protected string $public,
         protected string $private,
         protected ?string $id,
+        protected bool $isSandbox = false,
     ) {
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSandbox(): bool
+    {
+        return $this->isSandbox;
     }
 
     /**
