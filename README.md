@@ -2,14 +2,14 @@
 
 ## Laravel Usage
 
-create file `config/payments-api.php` with content:
+Create file `config/payments_api.php` with content:
 
 ```php
 return [
     'paypal' => [
-        'client_id' => env('PAYPAL_SANDBOX_CLIENT_ID', ''),
-        'client_secret' => env('PAYPAL_SANDBOX_CLIENT_SECRET', ''),
-        'app_id' => env('PAYPAL_SANDBOX_APP_ID', ''),
+        'client_id' => env('PAYPAL_CLIENT_ID', ''),
+        'client_secret' => env('PAYPAL_CLIENT_SECRET', ''),
+        'app_id' => env('PAYPAL_APP_ID', ''),
     ],
     'stripe' => [
         'secret_key' => env('STRIPE_SECRET_KEY', null),
@@ -20,4 +20,45 @@ return [
         'public_key' => env('LIQPAY_PUBLIC_KEY', null),
     ],
 ];
+```
+
+For get orderId use:
+
+```php
+    public function __construct(
+        protected PaymentFactory $paymentFactory
+    ) {
+    }
+    
+    public function getOrderId(int $system) {
+        $paymentService = $this->paymentFactory->getInstance(
+            Payments::from($system),
+            config('payments_api')
+        );
+        $makePaymentDTO = new MakePaymentDTO(
+            15.25,
+            Currency::USD
+        );
+        $orderId = $paymentService->cratePayment($makePaymentDTO);
+        
+        return $orderId;
+    }
+```
+
+For get payment result info use:
+
+```php
+    public function __construct(
+        protected PaymentFactory $paymentFactory
+    ) {
+    }
+    
+    public function getPaymentResult(int $system, string $paymentId) {
+    $paymentService = $this->paymentFactory->getInstance(
+        Payments::from($system),
+        config('payments_api')
+    );
+    $paymentResult = $paymentService->getPaymentInfo($paymentId);
+
+    return $paymentResult;
 ```

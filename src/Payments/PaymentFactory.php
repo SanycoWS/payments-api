@@ -19,16 +19,16 @@ class PaymentFactory
             Payments::PAYPAL => new PaypalHandler(
                 new PayPalClient(),
                 new AuthDataDTO(
-                    $configData['paypal.client_id'],
-                    $configData['paypal.client_secret'],
-                    $configData['paypal.app_id'],
+                    $configData['paypal']['client_id'],
+                    $configData['paypal']['client_secret'],
+                    $configData['paypal']['app_id'],
                 )
             ),
-            Payments::STRIPE => new StripeHandler(new StripeClient($configData['stripe.secret_key'])),
+            Payments::STRIPE => new StripeHandler(new StripeClient($configData['stripe']['secret_key'])),
             Payments::LIQPAY => new LiqpayHandler(
                 new AuthDataDTO(
-                    $configData['liqpay.private_key'],
-                    $configData['liqpay.public_key'],
+                    $configData['liqpay']['private_key'],
+                    $configData['liqpay']['public_key'],
                     null,
                 )
             ),
