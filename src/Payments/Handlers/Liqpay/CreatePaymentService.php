@@ -17,7 +17,7 @@ class CreatePaymentService
                     'amount' => $paymentDTO->getAmount(),
                     'currency' => $this->getCurrency($paymentDTO->getCurrency()),
                     'description' => $paymentDTO->getDescription(),
-                    'order_id' => round(microtime(true) * 1000),
+                    'order_id' => (int)round(microtime(true) * 1000),
                     'action' => 'pay',
                 ])
             );

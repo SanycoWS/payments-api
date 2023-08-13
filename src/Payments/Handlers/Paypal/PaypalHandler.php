@@ -15,9 +15,28 @@ class PaypalHandler implements PaymentsInterface
         AuthDataDTO $authData
     ) {
         $this->payPalClient->setApiCredentials([
-            'client_id' => $authData->getPublic(),
-            'client_secret' => $authData->getPrivate(),
-            'app_id' => $authData->getId(),
+            'mode' => 'live',
+            // Can only be 'sandbox' Or 'live'. If empty or invalid, 'live' will be used.
+            'sandbox' => [
+                'client_id' => '',
+                'client_secret' => '',
+                'app_id' => '',
+            ],
+            'live' => [
+                'client_id' => $authData->getPublic(),
+                'client_secret' => $authData->getPrivate(),
+                'app_id' => $authData->getId(),
+            ],
+
+            'payment_action' => 'Sale',
+            // Can only be 'Sale', 'Authorization' or 'Order'
+            'currency' => 'USD',
+            'notify_url' => '',
+            // Change this accordingly for your application.
+            'locale' => 'en_US',
+            // force gateway language  i.e. it_IT, es_ES, en_US ... (for express checkout only)
+            'validate_ssl' => true,
+            // Validate SSL when creating api client.
         ]);
         $this->payPalClient->getAccessToken();
     }
