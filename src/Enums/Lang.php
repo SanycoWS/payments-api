@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums;
+namespace Sanycows\PaymentsApi\Enums;
 
 enum Lang: string
 {

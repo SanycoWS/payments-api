@@ -2,8 +2,8 @@
 
 namespace Sanycows\PaymentsApi\Payments\Handlers\Stripe;
 
-use App\Enums\Currency;
 use Sanycows\PaymentsApi\Payments\DTO\MakePaymentDTO;
+use Sanycows\PaymentsApi\Payments\DTO\PaymentInfoDTO;
 use Sanycows\PaymentsApi\Payments\PaymentsInterface;
 use Stripe\StripeClient;
 
@@ -15,28 +15,14 @@ class StripeHandler implements PaymentsInterface
     ) {
     }
 
-    public function getPaymentInfo(string $paymentId): bool
+    public function getPaymentInfo(string $paymentId): PaymentInfoDTO
     {
-        $result = $this->stripe->paymentIntents->retrieve($paymentId);
-
-        return $result->status === 'succeeded';
+        return (new GetPaymentInfoService())->handle($this->stripe, $paymentId);
     }
 
     public function cratePayment(MakePaymentDTO $paymentDTO): string
     {
-        $result = $this->stripe->paymentIntents->create([
-            'amount' => $paymentDTO->getAmount() * 100,
-            'currency' => $this->getCurrency($paymentDTO->getCurrency()),
-        ]);
-
-        return $result->client_secret;
+        return (new CreatePaymentService())->handle($this->stripe, $paymentDTO);
     }
 
-    private function getCurrency(Currency $currency): string
-    {
-        return match ($currency) {
-            Currency::USD => 'usd',
-            Currency::EUR => 'eur',
-        };
-    }
 }

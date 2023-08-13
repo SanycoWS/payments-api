@@ -2,7 +2,7 @@
 
 namespace Sanycows\PaymentsApi\Payments\DTO;
 
-use App\Enums\Currency;
+use Sanycows\PaymentsApi\Enums\Currency;
 
 class MakePaymentDTO
 {

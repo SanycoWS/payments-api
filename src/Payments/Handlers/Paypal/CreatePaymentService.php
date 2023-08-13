@@ -2,7 +2,7 @@
 
 namespace Sanycows\PaymentsApi\Payments\Handlers\Paypal;
 
-use App\Enums\Currency;
+use Sanycows\PaymentsApi\Enums\Currency;
 use Sanycows\PaymentsApi\Payments\DTO\MakePaymentDTO;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
